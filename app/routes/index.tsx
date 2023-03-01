@@ -3,7 +3,11 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { DATE_FORMATTER } from "~/utils";
 
-export const loader: LoaderFunction = () => {
+export const loader: LoaderFunction = async () => {
+  // wait 5 seconds to simulate work
+  await new Promise(resolve => {
+    setTimeout(resolve, 5000)
+  })
   const date = new Date();
   console.log("Built page at", date);
   return json({ date: date.toISOString() });
@@ -11,7 +15,7 @@ export const loader: LoaderFunction = () => {
 
 export const headers: HeadersFunction = () => {
   const cacheInit: HeadersInit = {
-    "Cache-Control": "max-age=60",
+    "Cache-Control": "max-age=10",
   };
   return new Headers(cacheInit);
 };
